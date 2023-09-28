@@ -29,20 +29,32 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor) : OkHttpClient{
+    fun provideOkHttpBuilder(authInterceptor: AuthInterceptor) : OkHttpClient.Builder{
         return OkHttpClient
             .Builder()
             .connectTimeout(5, TimeUnit.MINUTES)
             .writeTimeout(5, TimeUnit.MINUTES)
             .readTimeout(5, TimeUnit.MINUTES)
-            .addInterceptor(authInterceptor)
-            .build()
+//            .addInterceptor(authInterceptor)
+//            .build()
     }
 
     @Singleton
     @Provides
-    fun providesUserAPI(retrofitBuilder: Retrofit.Builder) : UserAPI{
-        return retrofitBuilder.build().create(UserAPI::class.java)
+    fun provideOkHttpClientWithInterceptor(authInterceptor: AuthInterceptor, okHttpBuilder: OkHttpClient.Builder) : OkHttpClient{
+        return okHttpBuilder
+            .addInterceptor(authInterceptor)
+            .build()
+    }
+
+
+    @Singleton
+    @Provides
+    fun providesUserAPI(retrofitBuilder: Retrofit.Builder, okHttpBuilder: OkHttpClient.Builder) : UserAPI{
+        return retrofitBuilder
+            .client(okHttpBuilder.build())
+            .build().
+            create(UserAPI::class.java)
     }
 
     @Singleton

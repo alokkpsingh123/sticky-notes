@@ -13,9 +13,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.stickynotesapp.Models.NoteResponse
 import com.example.stickynotesapp.Utils.NetworkResult
+import com.example.stickynotesapp.Utils.TokenManager
 import com.example.stickynotesapp.databinding.FragmentMainBinding
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class mainFragment : Fragment() {
@@ -23,9 +25,11 @@ class mainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val noteViewModel by viewModels<NoteViewModel>()
-    private val authViewModel by viewModels<AuthViewModel>()
 
     private lateinit var  adapter: NoteAdapter
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +49,9 @@ class mainFragment : Fragment() {
         binding.noteList.adapter = adapter
         binding.btnLogout.setOnClickListener{
             //signout function
+            tokenManager.deleteToken()
+            findNavController().navigate(R.id.action_mainFragment_to_registerFragment)
+
         }
         binding.addNote.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_noteFragment)

@@ -14,6 +14,7 @@ import com.example.stickynotesapp.Models.UserRequest
 import com.example.stickynotesapp.Utils.NetworkResult
 import com.example.stickynotesapp.Utils.TokenManager
 import com.example.stickynotesapp.databinding.FragmentRegisterBinding
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -46,7 +47,7 @@ class registerFragment : Fragment() {
 
         binding.btnSignUp.setOnClickListener {
             val validationResult = validateUserInput()
-            if(validationResult .first){
+            if(validationResult.first){
                 authViewModel.registerUser(getUserRequestObject())
             }else{
                 binding.txtError.text = validationResult.second

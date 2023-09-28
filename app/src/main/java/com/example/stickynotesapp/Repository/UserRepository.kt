@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.stickynotesapp.Models.UserRequest
 import com.example.stickynotesapp.Models.UserResponse
-import com.example.stickynotesapp.Retrofit.NoteAPI
 import com.example.stickynotesapp.Retrofit.UserAPI
 import com.example.stickynotesapp.Utils.NetworkResult
 import org.json.JSONObject
@@ -29,6 +28,7 @@ class UserRepository @Inject constructor(private val userAPI: UserAPI) {
         handleResponse(response)
 
     }
+
 
     private fun handleResponse(response: Response<UserResponse>) {
         if (response.isSuccessful && response.body() != null) {
